@@ -15,7 +15,7 @@
   "devDependencies": {
     "gh-pages": "^2.2.0"
   },
-  "homepage": "http://ffkl.github.io/movies-catalog",
+  "homepage": "http://ffkl.github.io/react-movies-catalog",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
