@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.btn {
+  color: grey;
+}
+
+.btn_like {
+  background-color: yellow;
+}
