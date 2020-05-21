@@ -1,92 +1,64 @@
-import React from "react";
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
 
 export class Pagination extends React.Component {
-  calculateStartPageButton() {
-    const { currentPage, totalPages } = this.props;
+  calculateStartPage() {
+    const { page, totalPages } = this.props;
 
-    if (currentPage === 1) {
-      return currentPage;
-    } else if (currentPage === totalPages) {
-      return currentPage - 2;
-    } else {
-      return currentPage - 1;
-    }
+    if (page === 1) return page;
+    if (page === totalPages) return page - 2;
+    return page - 1;
   }
 
-  calculateEndPageButton() {
-    const { currentPage, totalPages } = this.props;
+  calculateEndPage() {
+    const { page, totalPages } = this.props;
 
-    if (currentPage === totalPages) {
-      return totalPages;
-    } else if (currentPage === 1) {
-      return currentPage + 2;
-    } else {
-      return currentPage + 1;
-    }
+    if (page === totalPages) return totalPages;
+    if (page === 1) return page + 2;
+    return page + 1;
   }
 
-  createPageButtonsRange(from, to) {
-    const pages = [];
-    for (let i = from; i <= to; i++) pages.push(i);
-
-    return pages;
+  createPageRange(from, to) {
+    return Array(to - from + 1)
+      .fill(null)
+      .map((_, idx) => from + idx);
   }
 
   createPageButtons() {
     const { totalPages } = this.props;
 
-    const from = this.calculateStartPageButton();
-    const to = this.calculateEndPageButton();
+    const from = this.calculateStartPage();
+    const to = this.calculateEndPage();
 
-    return this.createPageButtonsRange(from, to).filter(
+    return this.createPageRange(from, to).filter(
       (p) => p >= 1 && p <= totalPages
     );
   }
 
   render() {
-    const { currentPage, totalPages, updateCurrentPage } = this.props;
+    const { page, totalPages, updatePage } = this.props;
 
     return (
       <ul className="pagination justify-content-end">
-        <li
-          className={classNames({
-            "page-item": true,
-            disabled: currentPage === 1,
-          })}
-        >
-          <button
-            className="page-link"
-            onClick={() => updateCurrentPage(currentPage - 1)}
-          >
+        <li className={classNames('page-item', { disabled: page === 1 })}>
+          <button className="page-link" onClick={() => updatePage(page - 1)}>
             &laquo;
           </button>
         </li>
-        {this.createPageButtons().map((page) => (
+        {this.createPageButtons().map((pageBtn) => (
           <li
-            className={classNames({
-              "page-item": true,
-              active: currentPage === page,
-            })}
+            key={pageBtn}
+            className={classNames('page-item', { active: pageBtn === page })}
           >
-            <button
-              className="page-link"
-              onClick={() => updateCurrentPage(page)}
-            >
-              {page}
+            <button className="page-link" onClick={() => updatePage(pageBtn)}>
+              {pageBtn}
             </button>
           </li>
         ))}
         <li
-          className={classNames({
-            "page-item": true,
-            disabled: currentPage === totalPages,
-          })}
+          className={classNames('page-item', { disabled: page === totalPages })}
         >
-          <button
-            className="page-link"
-            onClick={() => updateCurrentPage(currentPage + 1)}
-          >
+          <button className="page-link" onClick={() => updatePage(page + 1)}>
             &raquo;
           </button>
         </li>

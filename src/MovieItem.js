@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export class MovieItem extends React.Component {
   constructor() {
@@ -24,9 +24,10 @@ export class MovieItem extends React.Component {
           alt={title}
         />
         <div className="card-body">
-
           <h6 className="card-title">{title}</h6>
-          <p className="mb-2 d-flex justify-content-end">Rating: {vote_average}</p>
+          <p className="mb-2 d-flex justify-content-end">
+            Rating: {vote_average}
+          </p>
           <div className="d-flex justify-content-between align-items-center">
             {this.state.willWatch ? (
               <button
@@ -52,11 +53,11 @@ export class MovieItem extends React.Component {
               </button>
             )}
             <button
-            className="btn btn-danger"
-            onClick={() => this.props.removeMovie(id)}
-          >
-            Delete
-          </button>
+              className="btn btn-danger"
+              onClick={() => this.props.removeMovie(id)}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>

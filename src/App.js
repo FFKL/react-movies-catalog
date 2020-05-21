@@ -1,8 +1,8 @@
-import React from "react";
-import MovieTabs from "./MovieTabs";
-import { MovieItem } from "./MovieItem";
-import { Pagination } from "./Pagination";
-import { API_URL, API_KEY_3 } from "./api";
+import React from 'react';
+import MovieTabs from './MovieTabs';
+import { MovieItem } from './MovieItem';
+import { Pagination } from './Pagination';
+import { API_URL, API_KEY_3 } from './api';
 
 export class App extends React.Component {
   constructor() {
@@ -10,8 +10,8 @@ export class App extends React.Component {
     this.state = {
       movies: [],
       willWatch: [],
-      sort_by: "popularity.desc",
-      currentPage: 1,
+      sort_by: 'popularity.desc',
+      page: 1,
       total_pages: null,
     };
   }
@@ -20,18 +20,17 @@ export class App extends React.Component {
     this.fetchMovies();
   }
 
-  componentDidUpdate(_, prevState) {
-    if (
-      prevState.sort_by !== this.state.sort_by ||
-      prevState.currentPage !== this.state.currentPage
-    ) {
-      this.fetchMovies();
-    }
+  componentDidUpdate(_, { sort_by, page }) {
+    const isSortByChanges = sort_by !== this.state.sort_by;
+    const isPageChanges = page !== this.state.page;
+
+    if (isSortByChanges) this.setState({ page: 1 });
+    if (isSortByChanges || isPageChanges) this.fetchMovies();
   }
 
   fetchMovies = () => {
     fetch(
-      `${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${this.state.currentPage}`
+      `${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${this.state.page}`
     )
       .then((res) => res.json())
       .then(({ results: movies, total_pages }) =>
@@ -59,11 +58,11 @@ export class App extends React.Component {
   };
 
   updateSortBy = (sort_by) => {
-    this.setState({ sort_by, currentPage: 1 });
+    this.setState({ sort_by });
   };
 
-  updateCurrentPage = (currentPage) => {
-    this.setState({ currentPage });
+  updatePage = (page) => {
+    this.setState({ page });
   };
 
   render() {
@@ -85,9 +84,9 @@ export class App extends React.Component {
               </div>
               <div className="col-5">
                 <Pagination
-                  currentPage={this.state.currentPage}
+                  page={this.state.page}
                   totalPages={this.state.total_pages}
-                  updateCurrentPage={this.updateCurrentPage}
+                  updatePage={this.updatePage}
                 />
               </div>
             </div>
@@ -108,7 +107,7 @@ export class App extends React.Component {
             <h4>Will Watch: {this.state.willWatch.length}</h4>
             <ul className="list-group">
               {this.state.willWatch.map((m) => (
-                <li className="list-group-item">
+                <li key={m.id} className="list-group-item">
                   <div className="d-flex justify-content-between">
                     {m.title}
                   </div>
